@@ -1,5 +1,4 @@
 "use client";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import { Home, Settings, LogOut } from "lucide-react";
@@ -8,7 +7,6 @@ import { ThemeToggle } from "./theme-toggle";
 import Dp from "./dp";
 
 const Navbar = () => {
-  const { data: session } = useSession();
 
   return (
     <div className="fixed bottom-0 w-full md:static md:h-full md:w-full bg-primary p-2 md:p-4 flex justify-evenly md:justify-start items-center md:flex-col md:gap-8 gap-2 md:items-start border-t border-t-gray-500 md:border-t-0">

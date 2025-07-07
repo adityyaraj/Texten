@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from "react";
-import { Marquee3D } from"../../../components/marquee";
+import { Marquee3D } from "../../components/marquee";
 import Log from "@/app/web/log/page";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";

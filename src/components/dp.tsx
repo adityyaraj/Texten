@@ -16,7 +16,7 @@ const Dp = () => {
     <img
       src={session.user.image || '/placeholder-avatar.png'}
       alt={session.user.name || 'User Avatar'}
-      className="w-full h-full object-cover rounded-full"
+      className="w-full h-full object-cover"
     />
   )
 }

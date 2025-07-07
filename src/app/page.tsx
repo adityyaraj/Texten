@@ -1,4 +1,4 @@
-import Front from "@/app/web/front/page";
+import Front from "@/app/front/page";
 
 
 export default function Home() {
