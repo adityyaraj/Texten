@@ -26,7 +26,7 @@ const ProfilePage = async () => {
           <div className="absolute left-4 block md:hidden text-g1 font-bold text-3xl">
             Texten
           </div>
-          <div className="text-white font-semibold text-3xl">Profile</div>
+          <div className="text-primary-foreground font-semibold text-3xl">Profile</div>
         </div>
       </div>
       <div className="mt-20 max-w-3xl md:mx-auto px-25 md:px-4 flex w-full gap-8 md:gap-16">
