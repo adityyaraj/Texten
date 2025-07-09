@@ -21,6 +21,17 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     }));
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const form = e.currentTarget.closest('form');
+      if (form) {
+        const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+        form.dispatchEvent(submitEvent);
+      }
+    }
+  };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setMessage("");
@@ -51,17 +62,51 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     <div className="animate-in duration-500 fade-in">
       <form className="flex flex-col gap-4 mt-8" onSubmit={handleSubmit}>
         <div className="flex flex-row gap-2">
-          <input type="text" name ="name" placeholder="Full Name" className="inp-main" value={formData.name} onChange={handleChange} />
-          <input type="text" name ="username" placeholder="Username" className="inp-main" value={formData.username} onChange={handleChange} />
+          <input 
+            type="text" 
+            name="name" 
+            placeholder="Full Name" 
+            className="inp-main" 
+            value={formData.name} 
+            onChange={handleChange} 
+            onKeyPress={handleKeyPress}
+          />
+          <input 
+            type="text" 
+            name="username" 
+            placeholder="Username" 
+            className="inp-main" 
+            value={formData.username} 
+            onChange={handleChange} 
+            onKeyPress={handleKeyPress}
+          />
         </div>
-        <input type="email" name ="email" placeholder="Email" className="inp-main" value={formData.email} onChange={handleChange} />
-        <input type="password" name ="password" placeholder="Password" className="inp-main" value={formData.password} onChange={handleChange} />
+        <input 
+          type="email" 
+          name="email" 
+          placeholder="Email" 
+          className="inp-main" 
+          value={formData.email} 
+          onChange={handleChange} 
+          onKeyPress={handleKeyPress}
+        />
+        <input 
+          type="password" 
+          name="password" 
+          placeholder="Password" 
+          className="inp-main" 
+          value={formData.password} 
+          onChange={handleChange} 
+          onKeyPress={handleKeyPress}
+        />
         <input
           type="password"
-          name ="confirmPassword"
+          name="confirmPassword"
           placeholder="Confirm Password"
           className="inp-main"
-          value={formData.confirmPassword} onChange={handleChange}
+          value={formData.confirmPassword} 
+          onChange={handleChange}
+          onKeyPress={handleKeyPress}
         />
         <button type="submit" className="btn-main">
           Sign Up

@@ -17,6 +17,17 @@ const Login = () => {
     [e.target.name]: e.target.value,
     }));
   };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const form = e.currentTarget.closest('form');
+      if (form) {
+        const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+        form.dispatchEvent(submitEvent);
+      }
+    }
+  };
   const handelSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -44,6 +55,7 @@ const Login = () => {
                   name="email"
                   value={formData.email}
                   onChange={handelChange}
+                  onKeyPress={handleKeyPress}
                 />
                 <input
                   type="password"
@@ -52,6 +64,7 @@ const Login = () => {
                   name="password"
                   value={formData.password}
                   onChange={handelChange}
+                  onKeyPress={handleKeyPress}
                 />
                 <button type="submit" className="btn-main">
                   Login
