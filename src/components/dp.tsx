@@ -2,22 +2,35 @@
 import React from 'react'
 import { useSession } from 'next-auth/react'
 import { User } from 'lucide-react';
+import Image from 'next/image'
 
-const Dp = () => {
-  const { data: session } = useSession()
+interface DpProps {
+  imageUrl?: string | null;
+  name?: string | null;
+}
+
+const Dp: React.FC<DpProps> = ({ imageUrl, name }) => {
   
-  if (!session || !session.user) {
+   if (imageUrl) {
     return (
-      <User size={25} className="text-muted-foreground"/>
-    )
+      <Image
+        src={imageUrl}
+        alt={`${name}'s profile picture`}
+        width={128}
+        height={128}
+        className="w-full h-full object-cover"
+        unoptimized
+      />
+    );
   }
 
+
   return (
-    <img
-      src={session.user.image || '/placeholder-avatar.png'}
-      alt={session.user.name || 'User Avatar'}
-      className="w-full h-full object-cover"
-    />
+   <div className="w-full h-full bg-gray-300 flex items-center justify-center">
+      <span className="text-gray-600 text-4xl">
+        {name ? name[0].toUpperCase() : "?"}
+      </span>
+    </div>
   )
 }
 

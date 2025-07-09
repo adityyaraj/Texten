@@ -42,6 +42,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     })
   ],
   callbacks: {
+    async signIn({ user, account, profile }) {
+      // When user signs in with Google, save their image to profileImage field
+      if (account?.provider === "google" && profile?.picture) {
+        try {
+          await prisma.user.update({
+            where: { email: user.email! },
+            data: { 
+              profileImage: profile.picture // Save Google image to profileImage
+            }
+          });
+        } catch (error) {
+          console.error("Error updating user profile image:", error);
+        }
+      }
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
@@ -51,6 +67,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
+        
+        // Fetch the latest user data including profileImage
+        try {
+          const user = await prisma.user.findUnique({
+            where: { id: token.id as string },
+            select: { profileImage: true }
+          });
+          
+          (session.user as any).profileImage = user?.profileImage;
+        } catch (error) {
+          console.error("Error fetching user profile image:", error);
+        }
       }
       return session;
     },
