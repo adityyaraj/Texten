@@ -35,7 +35,7 @@ const ProfilePage = async () => {
         </div>
         <div className="flex flex-col items-start justify-start gap-4">
           <div className="text-primary-foreground font-semibold">{user.name}</div>
-          <div className="text-primary rounded-xl bg-primary-foreground px-2 py-1">@{user.id}</div>
+          <div className="text-primary rounded-xl bg-primary-foreground px-2 py-1">@{user.username}</div>
         </div>
       </div>
     </div>

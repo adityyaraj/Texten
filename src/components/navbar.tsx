@@ -5,6 +5,7 @@ import { Home, Settings, LogOut } from "lucide-react";
 import { logout } from "@/app/actions/auth";
 import { ThemeToggle } from "./theme-toggle";
 import Dp from "./dp";
+import Logotbnt from "./logotbnt";
 
 const Navbar = () => {
 
@@ -33,13 +34,7 @@ const Navbar = () => {
         </div>
       </Link>
       <ThemeToggle />
-      <button
-        onClick={logout}
-        className="flex items-center gap-2 link-main"
-      >
-        <LogOut size={30} />
-        <span className="hidden md:inline">Logout</span>
-      </button>
+      <Logotbnt />
     </div>
   );
 };
