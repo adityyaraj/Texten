@@ -21,13 +21,13 @@ const Navbar = () => {
           <span className="hidden md:inline">Home</span>
         </div>
       </Link>
-      <Link href="/home/profile" className="link-main">
+      <Link href="/profile" className="link-main">
         <div className="flex items-center gap-2">
          <span className="rounded-full overflow-hidden w-7 h-7"><Dp/></span> 
           <span className="hidden md:inline">Profile</span>
         </div>
       </Link>
-      <Link href="/web/settings" className="link-main">
+      <Link href="/settings" className="link-main">
         <div className="flex items-center gap-2">
           <Settings size={30} />
           <span className="hidden md:inline">Settings</span>
