@@ -3,24 +3,50 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import Dp from "@/components/dp";
-import Link from "next/link";
-import Uploadertbn from "../web/uploader/page";
-
-
 
 const ProfilePage = async () => {
-  const session = await auth();
+  let session;
+  try {
+    session = await auth();
+  } catch (error) {
+    console.error("Error fetching session:", error);
+    redirect("/front");
+  }
 
   if (!session || !session.user) {
     redirect("/front");
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-  });
+  let user;
+  try {
+    user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+    });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    redirect("/front");
+  }
 
   if (!user) {
     redirect("/front");
+  }
+
+  let posts: Array<{
+    id: string;
+    title: string;
+    content: string | null;
+    imageUrl: string;
+    createdAt: Date;
+  }> = [];
+  try {
+    posts = await prisma.post.findMany({
+      where: { authorId: user.id },
+      orderBy: {
+        createdAt: "desc", // Fetch posts in descending order of creation
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching posts:", error);
   }
 
   return (
@@ -35,9 +61,9 @@ const ProfilePage = async () => {
           </div>
         </div>
       </div>
-      <div className="mt-20 max-w-3xl md:mx-auto px-25 md:px-4 flex w-full gap-8 md:gap-16">
+      <div className="mt-20 max-w-4xl md:mx-auto px-25 md:px-4 flex w-full gap-8 md:gap-16 md:border-b border-gray-500 pb-8 bg-primary">
         <div className="rounded-full w-32 h-32 mb-4 overflow-hidden">
-            <Dp imageUrl={user.profileImage || user.image} name={user.name} />
+          <Dp imageUrl={user.profileImage || user.image} name={user.name} />
         </div>
         <div className="flex flex-col items-start justify-start gap-4">
           <div className="text-primary-foreground font-semibold text-2xl">
@@ -46,17 +72,28 @@ const ProfilePage = async () => {
           <div className="text-primary rounded-xl bg-primary-foreground px-2 py-1">
             @{user.username}
           </div>
-          <Uploadertbn />
 
-          <Link
-            href={`/${user.username}`}
-            className="text-blue-500 hover:underline text-sm"
-          >
-            View Public Profile
-          </Link>
           <div className="text-gray-500 text-sm">
             Private Profile - Only you can see this
           </div>
+        </div>
+      </div>
+      <div className="flex items-center justify-center mt-8 max-w-5xl w-full mx-auto h-full rounded-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+       {posts.map((post) => (
+        <div key={post.id} className="border rounded-lg p-4 shadow-md">
+          <img
+            src={post.imageUrl}
+            alt={post.title}
+            className="w-full h-48 object-cover rounded"
+          />
+          <h3 className="text-lg font-bold mt-2">{post.title}</h3>
+          <p className="text-sm text-gray-500">{post.content}</p>
+          <p className="text-xs text-gray-400">
+            Uploaded on: {new Date(post.createdAt).toLocaleDateString()}
+          </p>
+        </div>
+          ))}
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { Marquee3D } from "../../components/marquee";
 import Log from "@/app/web/log/page";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const Front = () => {
   const router = useRouter();
@@ -25,7 +26,7 @@ const Front = () => {
       </div>
       <div className="hidden w-1/2 md:flex items-center justify-center">
         <div className="w-full">
-          <Marquee3D/>
+          <div><Image src="/bg.png" alt="Description" layout="responsive" width={500} height={500} /></div>
         </div>
       </div>
     </div>

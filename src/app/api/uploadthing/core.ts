@@ -45,6 +45,29 @@ export const ourFileRouter = {
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };
     }),
+  postUploader: f({
+    image: {
+      maxFileSize: "4MB", // Corrected file size
+      maxFileCount: 1,
+    },
+  })
+    .middleware(async ({ req }) => {
+      const session = await auth();
+      if (!session || !session.user) throw new UploadThingError("Unauthorized");
+      return { userId: session.user.id };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      if (!metadata.userId) throw new UploadThingError("User ID is missing");
+
+      await prisma.post.create({
+        data: {
+          title: "", // Placeholder, should be passed from client
+          content: "", // Placeholder, should be passed from client
+          imageUrl: file.url,
+          authorId: metadata.userId, // Ensured valid string
+        },
+      });
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
