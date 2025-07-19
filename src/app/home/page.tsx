@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
+import HomePagePosts from "@/components/homepost";
 
 const HomePage = async () => {
   const session = await auth();
@@ -33,6 +34,9 @@ const HomePage = async () => {
           <div className="text-primary-foreground font-semibold text-3xl">
             Posts
           </div>
+        </div>
+        <div>
+          <HomePagePosts />
         </div>
       </div>
       <div className="hidden md:block border-l border-gray-500 bg-primary md:w-2/5">
