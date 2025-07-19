@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export async function GET(
-  request: Request, 
-  { params }: { params: Promise<{ username: string }> }
-) {
-  // Await the params promise in Next.js 15
-  const { username } = await params;
-  
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const segments = url.pathname.split("/");
+  const username = segments[segments.length - 1];
+
   if (!username) {
     return NextResponse.json({ error: "Username is required" }, { status: 400 });
   }
