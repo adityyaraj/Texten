@@ -34,19 +34,19 @@ const PostUploadModal: React.FC<PostUploadModalProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-40">
-      <div className="relative bg-primary-foreground/50 rounded-lg shadow-lg p-6 w-96 z-50">
+      <div className="relative bg-primary rounded-lg shadow-lg p-6 w-96 z-50 border border-primary-foreground">
         <button
           className="absolute top-2 left-2 text-gray-500 hover:text-gray-800"
           onClick={onClose}
         >
           &times;
         </button>
-        <h2 className="text-lg font-bold mb-4">Upload Post</h2>
+        <h2 className="text-lg font-bold mb-4 text-primary-foreground">Upload Post</h2>
         <textarea
           placeholder="Content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="w-full border rounded p-2 mb-4"
+          className="w-full border border-primary-foreground rounded p-2 mb-4 text-primary-foreground"
         ></textarea>
         <UploadButton
           endpoint="postUploader" // Updated endpoint for post uploads

@@ -25,7 +25,6 @@ const UserProfilePage = ({ params }: UserProfilePageProps) => {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
-  // Reserved usernames that should not be allowed
   const reservedUsernames = [
     'api', 'home', 'admin', 'auth', 'front', 'web', 'log', 'signup', 'login',
     'profile', 'settings', 'help', 'about', 'contact', 'privacy', 'terms'
@@ -75,7 +74,8 @@ const UserProfilePage = ({ params }: UserProfilePageProps) => {
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col gap-50 md:gap-0">
+      <div>
       <div className="bg-primary w-full">
         <div className="flex items-center justify-center border-b border-gray-500 relative p-2">
           <div className="absolute left-4 block md:hidden text-g1 font-bold text-3xl">
@@ -100,9 +100,9 @@ const UserProfilePage = ({ params }: UserProfilePageProps) => {
           </div>
         </div>
       </div>
-
+</div>
       <div className="flex items-center justify-center mt-8 max-w-5xl w-full mx-auto h-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 gap-4 w-full p-10 md:p-0">
           {posts.map((post) => (
             <div 
               key={post.id} 

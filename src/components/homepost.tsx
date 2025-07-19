@@ -45,7 +45,7 @@ const HomePagePosts = async () => {
         {/* <span className="rounded-full overflow-hidden w-7 h-7">
           <Dp imageUrl={post.author?.profileImage || "/default-profile.png"} name={post.author?.username || "Unknown User"} />
         </span> */}
-        <Link href={`/${post.author.username}`} className="p-4 text-primary-foreground hover:underline pt-2">
+        <Link href={`/${post.author.username}`} className="p-4 text-primary-foreground pt-2">
           @{post.author.username || "Unknown User"}
         </Link>
       </div>

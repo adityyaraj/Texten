@@ -26,7 +26,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
       </button>
       
       {/* Main content container */}
-      <div className="flex flex-row items-stretch justify-center h-[70vh] w-full max-w-4xl mx-auto bg-primary border border-gray-300 rounded-sm shadow-lg">
+      <div className="flex flex-col md:flex-row items-stretch justify-center h-[70vh] w-full max-w-4xl mx-auto bg-primary border border-gray-300 rounded-sm shadow-lg">
         {/* Image container */}
         <div className="flex-1 flex items-center justify-center h-full ">
           <img
@@ -36,7 +36,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
           />
         </div>
         {/* Post details */}
-        <div className="bg-primary flex flex-col w-1/3 h-full items-center justify-center">
+        <div className="bg-primary flex flex-col md:w-1/3 md:h-full w-full items-center justify-center">
           {(username || content || uploadDate) && (
             <div className="flex flex-col items-center justify-center w-full">
               {username && (

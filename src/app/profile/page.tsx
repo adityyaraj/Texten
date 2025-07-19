@@ -4,12 +4,12 @@ import { useRouter } from "next/navigation";
 import Dp from "@/components/dp";
 import ImageModal from "@/components/imagemodal";
 
-const ProfilePage = () => { // Remove 'async' here
+const ProfilePage = () => {
   const [selectedPost, setSelectedPost] = useState<{
     username: undefined;
     imageUrl: string;
     content: string | null;
-    createdAt: string; // Change to string since it comes from API as string
+    createdAt: string; 
   } | null>(null);
   
   const [user, setUser] = useState<any>(null);
@@ -32,7 +32,6 @@ const ProfilePage = () => { // Remove 'async' here
         const postsResponse = await fetch(`/api/post?authorId=${userData.id}`);
         if (postsResponse.ok) {
           const postsData = await postsResponse.json();
-          // Ensure posts have author.username property
           setPosts(postsData.map((post: any) => ({
             ...post,
             username: post.author?.username ?? userData.username
@@ -52,7 +51,7 @@ const ProfilePage = () => { // Remove 'async' here
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="text-lg">Loading...</div>
+        <div className="text-lg text-primary-foreground">Loading...</div>
       </div>
     );
   }
@@ -62,7 +61,8 @@ const ProfilePage = () => { // Remove 'async' here
   }
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col gap-50 md:gap-0">
+      <div className=" ">
       <div className="bg-primary w-full">
         <div className="flex items-center justify-center border-b border-gray-500 relative p-2">
           <div className="absolute left-4 block md:hidden text-g1 font-bold text-3xl">
@@ -73,6 +73,7 @@ const ProfilePage = () => { // Remove 'async' here
           </div>
         </div>
       </div>
+      
       <div className="mt-20 max-w-4xl md:mx-auto px-25 md:px-4 flex w-full gap-8 md:gap-16 md:border-b border-gray-500 pb-8 bg-primary">
         <div className="rounded-full w-32 h-32 mb-4 overflow-hidden">
           <Dp imageUrl={user.profileImage || user.image} name={user.name} />
@@ -84,14 +85,11 @@ const ProfilePage = () => { // Remove 'async' here
           <div className="text-primary rounded-xl bg-primary-foreground px-2 py-1">
             @{user.username}
           </div>
-          <div className="text-gray-500 text-sm">
-            Private Profile - Only you can see this
-          </div>
         </div>
       </div>
-     
+     </div>
       <div className="flex items-center justify-center mt-8 max-w-5xl w-full mx-auto h-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-10 md:p-0">
           {posts.map((post) => (
             <div 
               key={post.id} 
@@ -99,7 +97,7 @@ const ProfilePage = () => { // Remove 'async' here
               onClick={() => setSelectedPost({
                 imageUrl: post.imageUrl,
                 content: post.content,
-                createdAt: post.createdAt, // Keep as string
+                createdAt: post.createdAt,
                 username: post.author?.username ?? post.username ?? undefined
               })}
             >

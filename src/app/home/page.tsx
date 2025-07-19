@@ -4,6 +4,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import HomePagePosts from "@/components/homepost";
+import Suggestions from "@/components/suggestions";
 
 const HomePage = async () => {
   const session = await auth();
@@ -40,7 +41,7 @@ const HomePage = async () => {
         </div>
       </div>
       <div className="hidden md:block border-l border-gray-500 bg-primary md:w-2/5">
-        hi
+        <Suggestions />
       </div>
     </div>
   );
