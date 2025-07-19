@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export async function GET(request: Request) {
-  const url = new URL(request.url);
-  const segments = url.pathname.split("/");
-  const username = segments[segments.length - 1];
-
+export async function GET(request: Request, { params }: { params: Promise<{ username: string }> }) {
+  const { username } = await params;
+  
   if (!username) {
     return NextResponse.json({ error: "Username is required" }, { status: 400 });
   }
