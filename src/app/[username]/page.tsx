@@ -1,7 +1,10 @@
+"use client";
 import React from "react";
-import { prisma } from "@/lib/db";
-import { notFound } from "next/navigation";
+// Removed direct Prisma usage; will fetch from API
+import { notFound, useRouter } from "next/navigation";
 import Dp from "@/components/dp";
+import ImageModal from "@/components/imagemodal";
+import { useState, useEffect } from "react";
 
 interface UserProfilePageProps {
   params: {
@@ -9,8 +12,19 @@ interface UserProfilePageProps {
   };
 }
 
-const UserProfilePage = async ({ params }: UserProfilePageProps) => {
-  const { username } = await params;
+const UserProfilePage = ({ params }: UserProfilePageProps) => {
+  // @ts-ignore
+  const { username } = React.use(params) as { username: string };
+    const [selectedPost, setSelectedPost] = useState<{
+      username: undefined;
+      imageUrl: string;
+      content: string | null;
+      createdAt: string; // Change to string since it comes from API as string
+    } | null>(null);
+
+    const [posts, setPosts] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
   // Reserved usernames that should not be allowed
   const reservedUsernames = [
@@ -22,23 +36,43 @@ const UserProfilePage = async ({ params }: UserProfilePageProps) => {
     notFound();
   }
 
-  // Find user by username (case insensitive)
-  const user = await prisma.user.findUnique({
-    where: { 
-      username: username.toLowerCase() 
-    },
-    select: {
-      id: true,
-      name: true,
-      username: true,
-      profileImage: true,
-      // Don't expose email or password
-    }
-  });
+  const [user, setUser] = useState<any | null>(null);
 
-  // If user not found, show 404
+  useEffect(() => {
+    const fetchUserAndPosts = async () => {
+      setLoading(true);
+      // Fetch user using new API route
+      const userRes = await fetch(`/api/user/${encodeURIComponent(username)}`);
+      if (userRes.ok) {
+        const userData = await userRes.json();
+        if (!userData) {
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+        setUser(userData);
+        // Fetch posts for user
+        const postsRes = await fetch(`/api/post?username=${encodeURIComponent(username)}`);
+        if (postsRes.ok) {
+          const postsData = await postsRes.json();
+          setPosts(postsData || []);
+        } else {
+          setPosts([]);
+        }
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    };
+    fetchUserAndPosts();
+  }, [username]);
+
+  if (loading) {
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  }
   if (!user) {
     notFound();
+    return null;
   }
 
   return (
@@ -67,6 +101,38 @@ const UserProfilePage = async ({ params }: UserProfilePageProps) => {
           </div>
         </div>
       </div>
+
+      <div className="flex items-center justify-center mt-8 max-w-5xl w-full mx-auto h-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {posts.map((post) => (
+            <div 
+              key={post.id} 
+              className=" cursor-pointer"
+              onClick={() => setSelectedPost({
+                imageUrl: post.imageUrl,
+                content: post.content,
+                createdAt: post.createdAt, // Keep as string
+                username: post.author?.username ?? post.username ?? undefined
+              })}
+            >
+              <img
+                src={post.imageUrl}
+                alt={post.content || "Post image"}
+                className="w-full h-100 md:h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      {selectedPost && (
+        <ImageModal
+          imageUrl={selectedPost.imageUrl}
+          username={selectedPost.username ?? undefined}
+          content={selectedPost.content ?? undefined}
+          uploadDate={new Date(selectedPost.createdAt)} // Convert string to Date here
+          onClose={() => setSelectedPost(null)}
+        />
+      )}
     </div>
   );
 };

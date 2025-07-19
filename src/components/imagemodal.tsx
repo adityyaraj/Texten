@@ -2,17 +2,17 @@ import React from "react";
 
 interface ImageModalProps {
   imageUrl: string;
-  title?: string;
   content?: string;
   uploadDate?: Date;
+  username?: string;
   onClose: () => void;
 }
 
 const ImageModal: React.FC<ImageModalProps> = ({ 
   imageUrl, 
-  title, 
   content, 
-  uploadDate, 
+  uploadDate,
+  username, 
   onClose 
 }) => {
   return (
@@ -26,32 +26,33 @@ const ImageModal: React.FC<ImageModalProps> = ({
       </button>
       
       {/* Main content container */}
-      <div className="flex flex-col items-center justify-center h-screen w-full max-w-4xl mx-auto p-4">
+      <div className="flex flex-row items-stretch justify-center h-[70vh] w-full max-w-4xl mx-auto bg-primary border border-gray-300 rounded-sm shadow-lg">
         {/* Image container */}
-        <div className="flex-1 flex items-center justify-center w-full">
+        <div className="flex-1 flex items-center justify-center h-full ">
           <img
             src={imageUrl}
-            alt={title || "Post image"}
-            className="max-w-full max-h-full object-contain"
+            alt={"Post image"}
+            className="max-h-full max-w-full object-contain"
           />
         </div>
-        
-        {/* Post details (optional) */}
-        {(title || content || uploadDate) && (
-          <div className="bg-white rounded-lg p-4 mt-4 max-w-md w-full">
-            {title && (
-              <h3 className="text-lg font-bold text-gray-800 mb-2">{title}</h3>
-            )}
-            {content && (
-              <p className="text-sm text-gray-600 mb-2">{content}</p>
-            )}
-            {uploadDate && (
-              <p className="text-xs text-gray-400">
-                Uploaded on: {new Date(uploadDate).toLocaleDateString()}
-              </p>
-            )}
-          </div>
-        )}
+        {/* Post details */}
+        <div className="bg-primary flex flex-col w-1/3 h-full items-center justify-center">
+          {(username || content || uploadDate) && (
+            <div className="flex flex-col items-center justify-center w-full">
+              {username && (
+                <h3 className="text-xl text-primary-foreground font-bold text-center mb-4">@{username}</h3>
+              )}
+              {content && (
+                <p className="text-base text-primary-foreground text-center mb-2">{content}</p>
+              )}
+              {uploadDate && (
+                <p className="text-xs text-primary-foreground text-center">
+                  Uploaded on: {new Date(uploadDate).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       
       {/* Click outside to close */}

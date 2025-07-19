@@ -6,6 +6,7 @@ import ImageModal from "@/components/imagemodal";
 
 const ProfilePage = () => { // Remove 'async' here
   const [selectedPost, setSelectedPost] = useState<{
+    username: undefined;
     imageUrl: string;
     content: string | null;
     createdAt: string; // Change to string since it comes from API as string
@@ -31,7 +32,11 @@ const ProfilePage = () => { // Remove 'async' here
         const postsResponse = await fetch(`/api/post?authorId=${userData.id}`);
         if (postsResponse.ok) {
           const postsData = await postsResponse.json();
-          setPosts(postsData);
+          // Ensure posts have author.username property
+          setPosts(postsData.map((post: any) => ({
+            ...post,
+            username: post.author?.username ?? userData.username
+          })));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -94,7 +99,8 @@ const ProfilePage = () => { // Remove 'async' here
               onClick={() => setSelectedPost({
                 imageUrl: post.imageUrl,
                 content: post.content,
-                createdAt: post.createdAt // Keep as string
+                createdAt: post.createdAt, // Keep as string
+                username: post.author?.username ?? post.username ?? undefined
               })}
             >
               <img
@@ -109,6 +115,7 @@ const ProfilePage = () => { // Remove 'async' here
       {selectedPost && (
         <ImageModal
           imageUrl={selectedPost.imageUrl}
+          username={selectedPost.username ?? undefined}
           content={selectedPost.content ?? undefined}
           uploadDate={new Date(selectedPost.createdAt)} // Convert string to Date here
           onClose={() => setSelectedPost(null)}

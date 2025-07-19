@@ -32,15 +32,15 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
       console.log("Upload complete for userId:", metadata.userId);
-      console.log("file url", file.url);
+      console.log("file url", file.ufsUrl);
 
       // Save the image URL to the database
       await prisma.user.update({
         where: { id: metadata.userId },
-        data: { profileImage: file.url },
+        data: { profileImage: file.ufsUrl },
       });
 
-      console.log("Image URL saved to database:", file.url);
+      console.log("Image URL saved to database:", file.ufsUrl);
 
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };
@@ -58,15 +58,7 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async ({ metadata, file }) => {
       if (!metadata.userId) throw new UploadThingError("User ID is missing");
-
-      await prisma.post.create({
-        data: {
-          title: "", // Placeholder, should be passed from client
-          content: "", // Placeholder, should be passed from client
-          imageUrl: file.url,
-          authorId: metadata.userId, // Ensured valid string
-        },
-      });
+      // No post creation here. Post will be created via /api/post route after upload.
     }),
 } satisfies FileRouter;
 

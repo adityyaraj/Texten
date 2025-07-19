@@ -1,6 +1,7 @@
 import React from "react";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
+import Dp from "./dp";
 
 const HomePagePosts = async () => {
   let posts: Array<{
@@ -9,6 +10,7 @@ const HomePagePosts = async () => {
     imageUrl: string;
     createdAt: Date;
     author: {
+      // profileImage: string;
       username: string | null;
     };
   }> = [];
@@ -39,11 +41,16 @@ const HomePagePosts = async () => {
       className="w-full max-w mx-auto md:max-w-lg border border-primary-foreground/10 rounded-sm flex flex-col"
       style={{ aspectRatio: "1 / 1" }} // Makes the card square
     >
-      <Link href={`/${post.author.username}`} className="p-2 text-primary-foreground hover:underline">
-        @{post.author.username || "Unknown User"}
-      </Link>
+      <div>
+        {/* <span className="rounded-full overflow-hidden w-7 h-7">
+          <Dp imageUrl={post.author?.profileImage || "/default-profile.png"} name={post.author?.username || "Unknown User"} />
+        </span> */}
+        <Link href={`/${post.author.username}`} className="p-4 text-primary-foreground hover:underline pt-2">
+          @{post.author.username || "Unknown User"}
+        </Link>
+      </div>
       {/* Image container */}
-      <div className="w-full h-5/6 overflow-hidden">
+      <div className="w-full h-5/6 overflow-hidden mt-2">
         <img
           src={post.imageUrl}
           alt={"Post image"}
