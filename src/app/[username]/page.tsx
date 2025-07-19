@@ -5,13 +5,7 @@ import Dp from "@/components/dp";
 import ImageModal from "@/components/imagemodal";
 import { useState, useEffect } from "react";
 
-interface UserProfilePageProps {
-  params: {
-    username: string;
-  };
-}
-
-const UserProfilePage = ({ params }: UserProfilePageProps) => {
+const UserProfilePage = ({ params }: any) => {
   // @ts-ignore
   const { username } = React.use(params) as { username: string };
     const [selectedPost, setSelectedPost] = useState<{
