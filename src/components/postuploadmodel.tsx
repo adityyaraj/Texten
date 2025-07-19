@@ -6,7 +6,6 @@ type PostUploadModalProps = {
 };
 
 const PostUploadModal: React.FC<PostUploadModalProps> = ({ onClose }) => {
-  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isUploading, setIsUploading] = useState(false);
 
@@ -17,7 +16,7 @@ const PostUploadModal: React.FC<PostUploadModalProps> = ({ onClose }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, content, imageUrl }),
+        body: JSON.stringify({content, imageUrl }),
       });
 
       if (!response.ok) {
@@ -43,13 +42,6 @@ const PostUploadModal: React.FC<PostUploadModalProps> = ({ onClose }) => {
           &times;
         </button>
         <h2 className="text-lg font-bold mb-4">Upload Post</h2>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full border rounded p-2 mb-4"
-        />
         <textarea
           placeholder="Content"
           value={content}
@@ -60,7 +52,7 @@ const PostUploadModal: React.FC<PostUploadModalProps> = ({ onClose }) => {
           endpoint="postUploader" // Updated endpoint for post uploads
           onClientUploadComplete={async (res) => {
             if (res && res.length > 0) {
-              const imageUrl = res[0].url; // Corrected property name
+              const imageUrl = res[0].ufsUrl; // Corrected property name
               await handlePostSave(imageUrl);
             } else {
               alert("Upload failed");

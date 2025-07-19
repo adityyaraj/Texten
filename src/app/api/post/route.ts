@@ -41,9 +41,9 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { title, content, imageUrl } = body;
+    const { content, imageUrl } = body;
 
-    if (!title || !imageUrl) {
+    if ( !imageUrl) {
         return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
@@ -57,7 +57,6 @@ export async function POST(req: NextRequest) {
 
     const post = await prisma.post.create({
         data:{
-            title,
             content,
             imageUrl,
             published: true,

@@ -7,7 +7,6 @@ import ImageModal from "@/components/imagemodal";
 const ProfilePage = () => { // Remove 'async' here
   const [selectedPost, setSelectedPost] = useState<{
     imageUrl: string;
-    title: string;
     content: string | null;
     createdAt: string; // Change to string since it comes from API as string
   } | null>(null);
@@ -86,29 +85,23 @@ const ProfilePage = () => { // Remove 'async' here
         </div>
       </div>
      
-      <div className="flex items-center justify-center mt-8 max-w-5xl w-full mx-auto h-full rounded-lg">
+      <div className="flex items-center justify-center mt-8 max-w-5xl w-full mx-auto h-full">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {posts.map((post) => (
             <div 
               key={post.id} 
-              className="border rounded-lg p-4 shadow-md cursor-pointer hover:shadow-lg transition-shadow"
+              className=" cursor-pointer"
               onClick={() => setSelectedPost({
                 imageUrl: post.imageUrl,
-                title: post.title,
                 content: post.content,
                 createdAt: post.createdAt // Keep as string
               })}
             >
               <img
                 src={post.imageUrl}
-                alt={post.title}
-                className="w-full h-48 object-cover rounded"
+                alt={post.content || "Post image"}
+                className="w-full h-100 md:h-full object-cover"
               />
-              <h3 className="text-lg font-bold mt-2">{post.title}</h3>
-              <p className="text-sm text-gray-500">{post.content}</p>
-              <p className="text-xs text-gray-400">
-                Uploaded on: {new Date(post.createdAt).toLocaleDateString()}
-              </p>
             </div>
           ))}
         </div>
@@ -116,7 +109,6 @@ const ProfilePage = () => { // Remove 'async' here
       {selectedPost && (
         <ImageModal
           imageUrl={selectedPost.imageUrl}
-          title={selectedPost.title}
           content={selectedPost.content ?? undefined}
           uploadDate={new Date(selectedPost.createdAt)} // Convert string to Date here
           onClose={() => setSelectedPost(null)}

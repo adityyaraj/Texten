@@ -10,7 +10,7 @@ interface UserProfilePageProps {
 }
 
 const UserProfilePage = async ({ params }: UserProfilePageProps) => {
-  const { username } = params;
+  const { username } = await params;
 
   // Reserved usernames that should not be allowed
   const reservedUsernames = [
@@ -31,7 +31,7 @@ const UserProfilePage = async ({ params }: UserProfilePageProps) => {
       id: true,
       name: true,
       username: true,
-      image: true,
+      profileImage: true,
       // Don't expose email or password
     }
   });
@@ -55,7 +55,7 @@ const UserProfilePage = async ({ params }: UserProfilePageProps) => {
       </div>
       <div className="mt-20 max-w-3xl md:mx-auto px-25 md:px-4 flex w-full gap-8 md:gap-16">
         <div className="rounded-full w-32 h-32 mb-4 overflow-hidden">
-          <Dp />
+          <Dp imageUrl={user.profileImage} />
         </div>
         <div className="flex flex-col items-start justify-start gap-4">
           <div className="text-primary-foreground font-semibold text-2xl">

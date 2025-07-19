@@ -99,7 +99,6 @@ model VerificationToken {
 
 model Post {
   id        String   @id @default(cuid())
-  title     String
   content   String?
   imageUrl  String
   published Boolean  @default(false)

@@ -16,7 +16,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
   onClose 
 }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-primary bg-opacity-90 flex items-center justify-center z-50">
       {/* Close button */}
       <button
         className="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 z-60"
@@ -32,7 +32,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
           <img
             src={imageUrl}
             alt={title || "Post image"}
-            className="max-w-full max-h-full object-contain rounded-lg"
+            className="max-w-full max-h-full object-contain"
           />
         </div>
         
