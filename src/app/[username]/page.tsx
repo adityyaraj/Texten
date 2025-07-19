@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-// Removed direct Prisma usage; will fetch from API
 import { notFound, useRouter } from "next/navigation";
 import Dp from "@/components/dp";
 import ImageModal from "@/components/imagemodal";
@@ -19,7 +18,7 @@ const UserProfilePage = ({ params }: UserProfilePageProps) => {
       username: undefined;
       imageUrl: string;
       content: string | null;
-      createdAt: string; // Change to string since it comes from API as string
+      createdAt: string;
     } | null>(null);
 
     const [posts, setPosts] = useState<any[]>([]);
@@ -51,8 +50,8 @@ const UserProfilePage = ({ params }: UserProfilePageProps) => {
           return;
         }
         setUser(userData);
-        // Fetch posts for user
-        const postsRes = await fetch(`/api/post?username=${encodeURIComponent(username)}`);
+        // Fetch posts for user using new API route
+        const postsRes = await fetch(`/api/post/${encodeURIComponent(username)}`);
         if (postsRes.ok) {
           const postsData = await postsRes.json();
           setPosts(postsData || []);
@@ -129,7 +128,7 @@ const UserProfilePage = ({ params }: UserProfilePageProps) => {
           imageUrl={selectedPost.imageUrl}
           username={selectedPost.username ?? undefined}
           content={selectedPost.content ?? undefined}
-          uploadDate={new Date(selectedPost.createdAt)} // Convert string to Date here
+          uploadDate={new Date(selectedPost.createdAt)}
           onClose={() => setSelectedPost(null)}
         />
       )}
