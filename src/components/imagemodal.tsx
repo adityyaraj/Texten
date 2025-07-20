@@ -26,7 +26,7 @@ const ImageModal: React.FC<ImageModalProps> = ({
       </button>
       
       {/* Main content container */}
-      <div className="flex flex-col md:flex-row items-stretch justify-center h-[70vh] w-full max-w-4xl mx-auto bg-primary border border-gray-300 rounded-sm shadow-lg">
+      <div className="flex flex-col md:flex-row items-stretch justify-center h-[70vh] w-full max-w-4xl mx-auto bg-primary md:border border-gray-300 rounded-sm shadow-lg">
         {/* Image container */}
         <div className="flex-1 flex items-center justify-center h-full ">
           <img
